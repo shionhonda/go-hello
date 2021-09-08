@@ -10,7 +10,7 @@ func TestFetch(t *testing.T) {
 	urls := []string{"http://gopl.io", "http://gopl.not_found"}
 	ch := make(chan string)
 	for _, url := range urls {
-		go fetch(url, ch)
+		go fetch(url, ch, "tmp.txt")
 	}
 	results := []string{}
 	for range urls {
