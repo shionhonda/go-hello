@@ -31,4 +31,18 @@ func TestString(t *testing.T) {
 		t.Errorf("Temp String: expected %s, but got %s", expected, s)
 	}
 
+	k := Kelvin(300)
+	s = k.String()
+	expected = "300K"
+	if s != expected {
+		t.Errorf("Temp String: expected %s, but got %s", expected, s)
+	}
+
+	k = Kelvin(0.1)
+	s = k.String()
+	expected = "0.1K"
+	if s != expected {
+		t.Errorf("Temp String: expected %s, but got %s", expected, s)
+	}
+
 }
