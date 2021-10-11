@@ -1,4 +1,4 @@
-// mandelbrot geenerates a PNG plot of Mandelbrot set
+// main generates a PNG plot of Mandelbrot set
 package main
 
 import (
