@@ -3,3 +3,5 @@
 ```sh
 go run main.go > sixhump.svg
 ```
+
+![](sixhump.svg)
