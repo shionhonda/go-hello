@@ -1,5 +1,5 @@
 # Mandelbrot Set
-With color.
+With super sampling.
 
 ```sh
 go run main.go > mandelbrot.png
