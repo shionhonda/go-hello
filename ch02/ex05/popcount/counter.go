@@ -21,6 +21,9 @@ func PopCount(x uint64) int {
 }
 
 func PopCountTrick(x uint64) int {
+	if x == 0 {
+		return 0
+	}
 	y := 0
 	for {
 		x = x & (x - 1)
