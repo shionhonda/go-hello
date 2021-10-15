@@ -9,6 +9,7 @@ func main() {
 	fmt.Printf("After: %v\n", s)
 }
 
+// TODO: juggling algorithm
 func rotate(s []int, l int) []int {
 	l = l % len(s)
 	return append(s[l:], s[:l]...)
