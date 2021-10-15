@@ -15,6 +15,7 @@ func main() {
 	fmt.Printf("After : %v\n", s)
 }
 
+// _, size := utf8.DecodeRune(b[i:])を使う
 func removeDupSpace(s []byte) []byte {
 	dups := 0
 	for i := 0; i < len(s)-1; i++ {
