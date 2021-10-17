@@ -12,7 +12,7 @@ type IssuesSearchResult struct {
 
 type Issue struct {
 	Number    int
-	HTMMLURL  string `json:"html_url"`
+	HTMLURL   string `json:"html_url"`
 	Title     string
 	State     string
 	User      *User
