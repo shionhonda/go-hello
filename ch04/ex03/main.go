@@ -6,7 +6,7 @@ func main() {
 	s := [5]int{1, 2, 3, 4, 5}
 	fmt.Printf("Before: %v\n", s)
 	reverse(&s)
-	fmt.Printf("After: %v\n", s)
+	fmt.Printf("After : %v\n", s)
 }
 
 func reverse(s *[5]int) {
