@@ -24,6 +24,7 @@ func main() {
 			var r, g, b uint8
 			for i := 0; i < 2; i++ {
 				for j := 0; j < 2; j++ {
+					// intになおして、足してから割り算する方が良い
 					r += rec[2*py+i][2*px+j][0] / 4
 					g += rec[2*py+i][2*px+j][1] / 4
 					b += rec[2*py+i][2*px+j][2] / 4

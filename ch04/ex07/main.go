@@ -24,7 +24,7 @@ func reverseBytes(s []byte) {
 }
 
 func reverseUTF8(s string) string {
-	b := []byte((s))
+	b := []byte(s)
 	// reverse bytes inside character
 	for i := 0; i < len(b); {
 		_, size := utf8.DecodeRune(b[i:])

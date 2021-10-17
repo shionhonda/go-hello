@@ -19,6 +19,7 @@ func TestIsAnagram(t *testing.T) {
 		{"abC", "abC", "cba", false},
 		{"abcc", "abcc", "cbca", true},
 		{"abcc", "abcc", "cbaa", false},
+		{"abcc", "c", "cbaa", false},
 	}
 	for _, tc := range testCases {
 		t.Run(tc.title, func(t *testing.T) {

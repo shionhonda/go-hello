@@ -17,7 +17,7 @@ type ComplexRat struct {
 }
 
 func (z *ComplexFloat) Mandelbrot() color.Color {
-	const iterations = 10
+	const iterations = 200
 
 	v := &ComplexFloat{big.NewFloat(0), big.NewFloat(0)}
 	for n := uint8(0); n < iterations; n++ {
@@ -64,7 +64,7 @@ func (z *ComplexFloat) abs() big.Float {
 }
 
 func (z *ComplexRat) Mandelbrot() color.Color {
-	const iterations = 10
+	const iterations = 200
 
 	v := &ComplexRat{big.NewRat(0, 1), big.NewRat(0, 1)}
 	for n := uint8(0); n < iterations; n++ {

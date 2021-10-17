@@ -17,6 +17,10 @@ func main() {
 }
 
 func isAnagram(s0, s1 string) bool {
+	// s1 にしかない文字があったらfalse
+	if len(s0) != len(s1) {
+		return false
+	}
 	var pool, s string
 	for _, r := range s0 {
 		s = string(r)
