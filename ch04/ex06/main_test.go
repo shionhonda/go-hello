@@ -9,15 +9,39 @@ import (
 func TestRotate(t *testing.T) {
 	var s, r, e string
 
-	s = "1  2 3  4"
+	s = "a  b c  e"
 	r = string(removeDupSpace([]byte(s)))
-	e = "1 2 3 4"
+	e = "a b c e"
 	assert.Equal(t, e, r)
 
-	// NOTE: This does not pass
-	s = "1  2 3      4"
+	s = "a  b c     e"
 	r = string(removeDupSpace([]byte(s)))
-	e = "1 2 3 4"
+	e = "a b c e"
+	assert.Equal(t, e, r)
+
+	s = "1  2 3      あ"
+	r = string(removeDupSpace([]byte(s)))
+	e = "1 2 3 あ"
+	assert.Equal(t, e, r)
+
+	s = "1  2 3 \t　   あ"
+	r = string(removeDupSpace([]byte(s)))
+	e = "1 2 3 あ"
+	assert.Equal(t, e, r)
+
+	s = "a   \t"
+	r = string(removeDupSpace([]byte(s)))
+	e = "a "
+	assert.Equal(t, e, r)
+
+	s = "  a   \t"
+	r = string(removeDupSpace([]byte(s)))
+	e = " a "
+	assert.Equal(t, e, r)
+
+	s = " \t　   \n "
+	r = string(removeDupSpace([]byte(s)))
+	e = " "
 	assert.Equal(t, e, r)
 
 }

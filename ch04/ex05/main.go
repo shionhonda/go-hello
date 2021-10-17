@@ -10,8 +10,8 @@ func main() {
 }
 
 func removeNextDups(s []string) []string {
-	var i, j, dups int
-	for i = 0; i < len(s)-1; i++ {
+	var j, dups int
+	for i := 0; i < len(s)-1; i++ {
 		if i+dups >= len(s)-1 {
 			break
 		}

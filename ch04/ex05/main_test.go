@@ -29,4 +29,9 @@ func TestRotate(t *testing.T) {
 	e = []string{"1", "3", "8", "2", "4", "1", "5"}
 	assert.EqualValues(t, e, s)
 
+	s = []string{"1", "3", "5", "8", "2", "2"}
+	s = removeNextDups(s)
+	e = []string{"1", "3", "5", "8", "2"}
+	assert.EqualValues(t, e, s)
+
 }

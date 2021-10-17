@@ -3,32 +3,35 @@ package main
 import (
 	"fmt"
 	"unicode"
+	"unicode/utf8"
 )
 
 const space string = " "
 
 func main() {
-	str := "1 2 3  4 　5 6 7"
+	str := "1 2 3  4 \n　5 日本語 7"
 	s := []byte(str)
-	fmt.Printf("Before: %v\n", s)
+	fmt.Printf("Before: %s\n", string(s))
 	s = removeDupSpace(s)
-	fmt.Printf("After : %v\n", s)
+	fmt.Printf("After : %s\n", string(s))
 }
 
-// _, size := utf8.DecodeRune(b[i:])を使う
 func removeDupSpace(s []byte) []byte {
-	dups := 0
-	for i := 0; i < len(s)-1; i++ {
-		if i+dups >= len(s)-1 {
-			break
-		}
-		if unicode.IsSpace(rune(s[i])) && unicode.IsSpace(rune(s[i+1])) {
-			if i < len(s)-2 {
-				copy(s[i+1:], s[i+2:])
-				// s[i+1] = byte(space[0])
+	var i, dups int
+	for i = 0; i < len(s); {
+		r0, sz0 := utf8.DecodeRune(s[i:])
+		r1, sz1 := utf8.DecodeRune(s[i+sz0:])
+		if unicode.IsSpace(r0) && unicode.IsSpace(r1) {
+			copy(s[i+sz0:], s[i+sz0+sz1:])
+			dups += sz1
+			// to deal with trailing spaces
+			if i+dups >= len(s)-1 {
+				return s[:i+1]
 			}
-			dups++
+		} else {
+			// spaces are deduplicated until i+sz0
+			i += sz0
 		}
 	}
-	return s[:len(s)-dups]
+	return s[:i-dups]
 }
