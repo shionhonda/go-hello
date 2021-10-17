@@ -14,9 +14,9 @@ const numComics int = 100
 
 func main() {
 	// Download data
-	os.Mkdir("ex12/data", 0777)
+	os.Mkdir("data", 0777)
 	for i := 1; i <= numComics; i++ {
-		filepath := fmt.Sprintf("ex12/data/%04d.json", i)
+		filepath := fmt.Sprintf("data/%04d.json", i)
 		if _, err := os.Stat(filepath); os.IsNotExist(err) {
 			out, err := os.Create(filepath)
 			if err != nil {
@@ -31,7 +31,7 @@ func main() {
 	// Index
 	comics := []mytypes.Comic{}
 	for i := 1; i <= numComics; i++ {
-		filepath := fmt.Sprintf("ex12/data/%04d.json", i)
+		filepath := fmt.Sprintf("data/%04d.json", i)
 		comic := index.LoadJSON(filepath)
 		comics = append(comics, *comic)
 	}
