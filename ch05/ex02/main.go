@@ -19,14 +19,14 @@ func main() {
 }
 
 func countElements(m map[string]int, n *html.Node) map[string]int {
-	// nで見つかったリンクをリストに追加
 	if n.Type == html.ElementNode {
 		m[n.Data]++
 	}
-	// リストの中身を順番にたどる
+	// traverse vertically
 	if n.FirstChild != nil {
 		m = countElements(m, n.FirstChild)
 	}
+	// then vertically
 	if n.NextSibling != nil {
 		m = countElements(m, n.NextSibling)
 	}

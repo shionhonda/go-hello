@@ -20,7 +20,6 @@ func main() {
 
 // depth-first search
 func visit(links []string, n *html.Node) []string {
-	// nで見つかったリンクをリストに追加
 	if n.Type == html.ElementNode && n.Data == "a" {
 		for _, a := range n.Attr {
 			if a.Key == "href" {
@@ -28,10 +27,11 @@ func visit(links []string, n *html.Node) []string {
 			}
 		}
 	}
-	// リストの中身を順番にたどる
+	// traverse vertically
 	if n.FirstChild != nil {
 		links = visit(links, n.FirstChild)
 	}
+	// then horizontally
 	if n.NextSibling != nil {
 		links = visit(links, n.NextSibling)
 	}
