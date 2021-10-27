@@ -1,6 +1,6 @@
 # HTML text extractor
 ```sh
-$ $ go run ../../ch01/ex07/main.go  https://golang.org | go run main.go
+$ go run ../../ch01/ex07/main.go  https://golang.org | go run main.go
 000: 
 
 001: 
