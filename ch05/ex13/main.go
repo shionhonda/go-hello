@@ -28,6 +28,7 @@ func breadthFirst(f func(item string) []string, origin string) {
 				h, err := getHostname(item)
 				if err == nil {
 					if h == hostname {
+						// TODO: copy file
 						fmt.Println(item)
 					} else {
 						fmt.Printf("skipping: %s\n", item)
