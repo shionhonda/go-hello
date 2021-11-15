@@ -2,14 +2,12 @@ package main
 
 import (
 	"fmt"
-	"go-hello/ch06/ex01/intset"
+	"go-hello/ch06/ex02/intset"
 )
 
 func main() {
 	var x, y intset.IntSet
-	x.Add(1)
-	x.Add(144)
-	x.Add(9)
+	x.AddAll(1, 9, 144)
 	fmt.Println(x.String())
 
 	y = *x.Copy()
