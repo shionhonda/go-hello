@@ -33,3 +33,23 @@ func TestUnionWithString(t *testing.T) {
 	x.UnionWith(&y)
 	assert.Equal(t, "{1 2 3 4}", x.String())
 }
+
+func TestLenRemoveClearCopy(t *testing.T) {
+	var x IntSet
+	assert.Equal(t, 0, x.Len())
+	x.Remove(1)
+	assert.Equal(t, 0, x.Len())
+	x.Add(1)
+	assert.Equal(t, 1, x.Len())
+	x.Add(2)
+	assert.Equal(t, 2, x.Len())
+	x.Add(3)
+	y := x.Copy()
+	assert.Equal(t, 3, x.Len())
+	assert.Equal(t, 3, y.Len())
+	x.Remove(3)
+	assert.Equal(t, 2, x.Len())
+	x.Clear()
+	assert.Equal(t, 0, x.Len())
+	assert.Equal(t, 3, y.Len())
+}
