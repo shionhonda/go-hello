@@ -15,7 +15,7 @@ func main() {
 	for i := 0; i < 10; i++ {
 		root = add(root, rand.Int()%10)
 	}
-	fmt.Println(root.String())
+	fmt.Println(root)
 }
 
 // String returns a string representation of t's values.
