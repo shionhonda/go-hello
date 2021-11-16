@@ -1,10 +1,24 @@
 package main
 
-import "io"
+import (
+	"fmt"
+	"go-hello/ch07/ex01/counter"
+	"io"
+)
 
 type countingWriter struct {
 	w io.Writer
 	n int64
+}
+
+func main() {
+	var lc counter.LineCounter
+	cw, naddr := CountingWriter(&lc)
+	fmt.Println(*naddr)
+	cw.Write([]byte("hello"))
+	fmt.Println(*naddr)
+	cw.Write([]byte("world"))
+	fmt.Println(*naddr)
 }
 
 func (cw *countingWriter) Write(p []byte) (int, error) {
