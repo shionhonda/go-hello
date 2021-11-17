@@ -1,0 +1,1 @@
+The function `(f *FlagSet) PrintDefaults() ` calls `Celsius`'s `String()` method.
