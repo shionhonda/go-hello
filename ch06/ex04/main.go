@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"go-hello/ch06/ex02/intset"
+	"go-hello/ch06/ex04/intset"
 )
 
 func main() {
@@ -20,4 +20,7 @@ func main() {
 	x.Clear()
 	fmt.Println(x.Len())
 	fmt.Println(y.Len())
+
+	fmt.Println(x.Elems())
+	fmt.Println(y.Elems())
 }
