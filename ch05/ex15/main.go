@@ -1,7 +1,5 @@
 package main
 
-import "fmt"
-
 const maxInt = int(^uint(0) >> 1)
 const minInt = -maxInt - 1
 
@@ -25,28 +23,22 @@ func min(vals ...int) int {
 	return m
 }
 
-func safeMax(vals ...int) (int, error) {
-	if len(vals) == 0 {
-		return 0, fmt.Errorf("no values provided")
-	}
-	m := minInt
+func safeMax(val int, vals ...int) int {
+	m := val
 	for _, v := range vals {
 		if v > m {
 			m = v
 		}
 	}
-	return m, nil
+	return m
 }
 
-func safeMin(vals ...int) (int, error) {
-	if len(vals) == 0 {
-		return 0, fmt.Errorf("no values provided")
-	}
-	m := maxInt
+func safeMin(val int, vals ...int) int {
+	m := val
 	for _, v := range vals {
 		if v < m {
 			m = v
 		}
 	}
-	return m, nil
+	return m
 }

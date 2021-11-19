@@ -30,12 +30,12 @@ func breadthFirst(f func(item string) []string, origin string) {
 					if h == hostname {
 						// TODO: copy file
 						fmt.Println(item)
+						worklist = append(worklist, f(item)...)
 					} else {
 						fmt.Printf("skipping: %s\n", item)
 					}
 				}
 				seen[item] = true
-				worklist = append(worklist, f(item)...)
 			}
 		}
 	}
