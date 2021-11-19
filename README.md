@@ -1,4 +1,3 @@
 # go-hello
-Hello, gopher!
+My solutions for the exercises of "[The Go Programming Language](https://www.gopl.io/)" by Donovan & Kernighan.
 
-https://www.gopl.io/
