@@ -34,7 +34,7 @@ func fetch(url string) (filename string, bytes int64, retErr error) {
 		return "", 0, err
 	}
 
-	// check if the file is successfylly closed and return it if no other error happened
+	// check if the file is successfully closed and return it if no other error happened
 	defer func() {
 		if closeErr := f.Close(); retErr == nil {
 			retErr = closeErr
