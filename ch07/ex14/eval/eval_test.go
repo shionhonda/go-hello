@@ -20,8 +20,12 @@ func TestEval(t *testing.T) {
 		{"5 / 9 * (F - 32)", Env{"F": -40}, "-40"},
 		{"5 / 9 * (F - 32)", Env{"F": 32}, "0"},
 		{"5 / 9 * (F - 32)", Env{"F": 212}, "100"},
+		//!-Eval
+		// additional tests that don't appear in the book
 		{"-1 + -x", Env{"x": 1}, "-2"},
 		{"-1 - x", Env{"x": 1}, "-2"},
+		{"min(x, y, 3)", Env{"x": 9, "y": -1}, "-1"},
+		//!+Eval
 	}
 	var prevExpr string
 	for _, test := range tests {
