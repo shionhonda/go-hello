@@ -50,16 +50,11 @@ func TestSafeMax(t *testing.T) {
 		{[]int{-1, -3, -5, -7, -9}, -1, false},
 		{[]int{-2, -4, 0, 4}, 4, false},
 		{[]int{-1, -5, 0}, 0, false},
-		{[]int{}, 0, true},
+		{[]int{1}, 1, true},
 	}
 	for _, test := range tests {
-		m, err := safeMax(test.vals...)
-		if test.isErr {
-			assert.Error(t, err)
-		} else {
-			assert.Nil(t, err)
-			assert.Equal(t, test.want, m)
-		}
+		m := safeMax(test.vals[0], test.vals[1:]...)
+		assert.Equal(t, test.want, m)
 	}
 }
 
@@ -73,15 +68,10 @@ func TestSafeMin(t *testing.T) {
 		{[]int{-1, 3, -5, 7, -9}, -9, false},
 		{[]int{-2, -4, 0, 4}, -4, false},
 		{[]int{1, 5, 0}, 0, false},
-		{[]int{}, 0, true},
+		{[]int{1}, 1, true},
 	}
 	for _, test := range tests {
-		m, err := safeMin(test.vals...)
-		if test.isErr {
-			assert.Error(t, err)
-		} else {
-			assert.Nil(t, err)
-			assert.Equal(t, test.want, m)
-		}
+		m := safeMin(test.vals[0], test.vals[1:]...)
+		assert.Equal(t, test.want, m)
 	}
 }
