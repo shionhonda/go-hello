@@ -15,7 +15,7 @@ sys     0m0.272s
 ```sh
 $ time go run ch08/ex05/main.go > /dev/null
 
-real    0m0.804s
-user    0m1.123s
-sys     0m0.281s
+real    0m0.789s
+user    0m0.665s
+sys     0m0.329s
 ```
