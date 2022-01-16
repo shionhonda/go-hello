@@ -1,4 +1,4 @@
-package main
+package minmax
 
 const maxInt = int(^uint(0) >> 1)
 const minInt = -maxInt - 1

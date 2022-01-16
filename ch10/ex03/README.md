@@ -1,4 +1,4 @@
-GitHub
+github.com
 
 ```sh
 $ go run main.go http://gopl.io/ch1/helloworld?go-get=1
