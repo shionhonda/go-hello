@@ -6,7 +6,13 @@ import (
 	"strconv"
 )
 
-//!+Display
+func main() {
+	Display("map_string", map[string]int{"one": 1, "two": 2, "three": 3})
+	arr := [3]int{1, 2, 3}
+	Display("map_arr", map[[3]int]int{arr: 1})
+	s := struct{ key string }{key: "a"}
+	Display("map_struct", map[struct{ key string }]int{s: 1})
+}
 
 func Display(name string, x interface{}) {
 	fmt.Printf("Display %s (%T):\n", name, x)
@@ -60,8 +66,13 @@ func display(path string, v reflect.Value) {
 		}
 	case reflect.Map:
 		for _, key := range v.MapKeys() {
-			display(fmt.Sprintf("%s[%s]", path,
-				formatAtom(key)), v.MapIndex(key))
+			if key.Kind() == reflect.String {
+				display(fmt.Sprintf("%s[%s]", path, formatAtom(key)),
+					v.MapIndex(key))
+			} else {
+				display(fmt.Sprintf("%s[%v]", path, key),
+					v.MapIndex(key))
+			}
 		}
 	case reflect.Ptr:
 		if v.IsNil() {
