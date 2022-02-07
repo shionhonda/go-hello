@@ -20,7 +20,7 @@ func Marshal(v interface{}) ([]byte, error) {
 const margin = 80
 
 type token struct {
-	kind rune // one of "s ()" (string, blank, start, end)
+	kind rune // one of "s () {} []" (string, blank, start, end)
 	str  string
 	size int
 }
@@ -49,18 +49,18 @@ func (p *printer) pop() (top *token) {
 	top, p.stack = p.stack[last], p.stack[:last]
 	return
 }
-func (p *printer) begin() {
+func (p *printer) begin(r rune) {
 	if len(p.stack) == 0 {
 		p.rtotal = 1
 	}
-	t := &token{kind: '(', size: -p.rtotal}
+	t := &token{kind: r, size: -p.rtotal}
 	p.tokens = append(p.tokens, t)
 	p.stack = append(p.stack, t) // push
-	p.string("(")
+	p.string(string(r))
 }
-func (p *printer) end() {
-	p.string(")")
-	p.tokens = append(p.tokens, &token{kind: ')'})
+func (p *printer) end(r rune) {
+	p.string(string(r))
+	p.tokens = append(p.tokens, &token{kind: r})
 	x := p.pop()
 	x.size += p.rtotal
 	if x.kind == ' ' {
@@ -73,6 +73,7 @@ func (p *printer) end() {
 		p.tokens = nil
 	}
 }
+
 func (p *printer) space() {
 	last := len(p.stack) - 1
 	x := p.stack[last]
@@ -90,9 +91,9 @@ func (p *printer) print(t *token) {
 	case 's':
 		p.WriteString(t.str)
 		p.width -= len(t.str)
-	case '(':
+	case '[', '{':
 		p.indents = append(p.indents, p.width)
-	case ')':
+	case ']', '}':
 		p.indents = p.indents[:len(p.indents)-1] // pop
 	case ' ':
 		if t.size > p.width {
@@ -111,13 +112,13 @@ func (p *printer) stringf(format string, args ...interface{}) {
 func encode(p *printer, v reflect.Value) error {
 	switch v.Kind() {
 	case reflect.Invalid:
-		p.string("nil")
+		p.string("null")
 
 	case reflect.Bool:
 		if v.Bool() {
-			p.string("t")
+			p.string("true")
 		} else {
-			p.string("nil")
+			p.string("false")
 		}
 
 	case reflect.Int, reflect.Int8, reflect.Int16,
@@ -131,14 +132,11 @@ func encode(p *printer, v reflect.Value) error {
 	case reflect.Float32, reflect.Float64:
 		p.stringf("%f", v.Float())
 
-	case reflect.Complex64, reflect.Complex128:
-		p.stringf("#C(%f %f)", real(v.Complex()), imag(v.Complex()))
-
 	case reflect.String:
 		p.stringf("%q", v.String())
 
 	case reflect.Array, reflect.Slice: // (value ...)
-		p.begin()
+		p.begin('[')
 		for i := 0; i < v.Len(); i++ {
 			if i > 0 {
 				p.space()
@@ -146,55 +144,53 @@ func encode(p *printer, v reflect.Value) error {
 			if err := encode(p, v.Index(i)); err != nil {
 				return err
 			}
+			if i < v.Len()-1 {
+				p.string(", ")
+			}
 		}
-		p.end()
+		p.end(']')
 
 	case reflect.Struct: // ((name value ...)
-		p.begin()
+		p.begin('{')
 		for i := 0; i < v.NumField(); i++ {
 			if i > 0 {
 				p.space()
 			}
-			p.begin()
-			p.string(v.Type().Field(i).Name)
+			p.stringf("%q: ", v.Type().Field(i).Name)
 			p.space()
 			if err := encode(p, v.Field(i)); err != nil {
 				return err
 			}
-			p.end()
+			if i < v.NumField()-1 {
+				p.string(", ")
+			}
 		}
-		p.end()
+		p.end('}')
 
 	case reflect.Map: // ((key value ...)
-		p.begin()
+		p.begin('{')
 		for i, key := range v.MapKeys() {
 			if i > 0 {
 				p.space()
 			}
-			p.begin()
 			if err := encode(p, key); err != nil {
 				return err
 			}
+			p.string(": ")
 			p.space()
 			if err := encode(p, v.MapIndex(key)); err != nil {
 				return err
 			}
-			p.end()
+			if i < v.Len()-1 {
+				p.string(", ")
+			}
 		}
-		p.end()
+		p.end('}')
 
 	case reflect.Ptr:
 		return encode(p, v.Elem())
 
-	case reflect.Interface:
-		p.stringf("\"%s\"", reflect.TypeOf(v.Interface()).String())
-		p.begin()
-		if err := encode(p, v.Elem()); err != nil {
-			return err
-		}
-		p.end()
-
-	default: // float, complex, bool, chan, func, interface
+	default: // chan, func, complex, interface
 		return fmt.Errorf("unsupported type: %s", v.Type())
 	}
 	return nil

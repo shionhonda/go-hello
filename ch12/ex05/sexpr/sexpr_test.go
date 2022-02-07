@@ -1,19 +1,11 @@
 package sexpr
 
 import (
+	"encoding/json"
+	"reflect"
 	"testing"
 )
 
-// Test verifies that encoding and decoding a complex data value
-// produces an equal result.
-//
-// The test does not make direct assertions about the encoded output
-// because the output depends on map iteration order, which is
-// nondeterministic.  The output of the t.Log statements can be
-// inspected by running the test with the -v flag:
-//
-// 	$ go test -v gopl.io/ch12/sexpr
-//
 func Test(t *testing.T) {
 	type Movie struct {
 		Title, Subtitle string
@@ -22,6 +14,7 @@ func Test(t *testing.T) {
 		Oscars          []string
 		Sequel          *string
 		Bool            []bool
+		Float           float64
 	}
 	strangelove := Movie{
 		Title:    "Dr. Strangelove",
@@ -41,6 +34,8 @@ func Test(t *testing.T) {
 			"Best Director (Nomin.)",
 			"Best Picture (Nomin.)",
 		},
+		Bool:  []bool{true, false},
+		Float: -0.4,
 	}
 
 	// Encode it
@@ -49,4 +44,15 @@ func Test(t *testing.T) {
 		t.Fatalf("Marshal failed: %v", err)
 	}
 	t.Logf("Marshal() = %s\n", data)
+
+	var recon Movie
+	if err := json.Unmarshal(data, &recon); err != nil {
+		t.Fatalf("Unmarshal failed: %v", err)
+	}
+	t.Logf("Unmarshal() = %+v\n", recon)
+
+	// Check equality.
+	if !reflect.DeepEqual(recon, strangelove) {
+		t.Fatal("not equal")
+	}
 }

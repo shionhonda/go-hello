@@ -22,6 +22,9 @@ func Test(t *testing.T) {
 		Oscars          []string
 		Sequel          *string
 		Bool            []bool
+		Float           float64
+		Complex         complex128
+		Interface       interface{}
 	}
 	strangelove := Movie{
 		Title:    "Dr. Strangelove",
@@ -41,6 +44,10 @@ func Test(t *testing.T) {
 			"Best Director (Nomin.)",
 			"Best Picture (Nomin.)",
 		},
+		Bool:      []bool{true, false},
+		Float:     -0.4,
+		Complex:   0.5 + 0.5i,
+		Interface: []int{1, 2, 3},
 	}
 
 	// Encode it
