@@ -11,10 +11,10 @@ type Movie struct {
 	Actor           map[string]string
 	Oscars          []string
 	Sequel          *string
-	// Bool            []bool
-	// Float           float64
-	// Complex         complex128
-	// Interface       interface{}
+	Bool            []bool
+	Float           float64
+	Complex         complex128
+	Interface       interface{}
 }
 
 func main() {
@@ -36,10 +36,10 @@ func main() {
 			"Best Director (Nomin.)",
 			"Best Picture (Nomin.)",
 		},
-		// Bool:    []bool{true, false},
-		// Float:   -0.4,
-		// Complex: 0.5 + 0.5i,
-		// Interface: []int{1, 2, 3},
+		Bool:      []bool{true, false},
+		Float:     -0.4,
+		Complex:   0.5 + 0.5i,
+		Interface: []int{1, 2, 3},
 	}
 
 	data, err := sexpr.MarshalIndent(strangelove)
