@@ -9,7 +9,7 @@ import (
 
 type data struct {
 	Labels     []string `http:"l"`
-	MaxResults int      `http:"max,default=10"`
+	MaxResults int      `http:"max" max:"1000"`
 	Exact      bool     `http:"x"`
 }
 
@@ -19,10 +19,10 @@ func TestUnpack(t *testing.T) {
 		expected data
 	}
 	testCases := []testCase{
-		{"http://localhost:8000/", data{Labels: []string(nil), MaxResults: 10, Exact: false}},
-		{"http://localhost:8000/?l=golang&l=programming", data{Labels: []string{"golang", "programming"}, MaxResults: 10, Exact: false}},
+		{"http://localhost:8000/", data{Labels: []string(nil), MaxResults: 0, Exact: false}},
+		{"http://localhost:8000/?l=golang&l=programming", data{Labels: []string{"golang", "programming"}, MaxResults: 0, Exact: false}},
 		{"http://localhost:8000/?l=golang&l=programming&max=100", data{Labels: []string{"golang", "programming"}, MaxResults: 100, Exact: false}},
-		{"http://localhost:8000/?x=true&l=golang&l=programming", data{Labels: []string{"golang", "programming"}, MaxResults: 10, Exact: true}},
+		{"http://localhost:8000/?x=true&l=golang&l=programming&max=2000", data{Labels: []string{"golang", "programming"}, MaxResults: 1000, Exact: true}},
 	}
 	for _, tc := range testCases {
 		req, _ := http.NewRequest("GET", tc.url, nil)

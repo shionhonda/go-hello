@@ -19,7 +19,7 @@ import (
 func search(resp http.ResponseWriter, req *http.Request) {
 	var data struct {
 		Labels     []string `http:"l"`
-		MaxResults int      `http:"max,default=10"`
+		MaxResults int      `http:"max" max:"1000"`
 		Exact      bool     `http:"x"`
 	}
 	data.MaxResults = 10 // set default

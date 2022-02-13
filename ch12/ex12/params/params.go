@@ -25,6 +25,7 @@ func Unpack(req *http.Request, ptr interface{}) error {
 
 	// Build map of fields keyed by effective name.
 	fields := make(map[string]reflect.Value)
+	maxs := make(map[string]int64)
 	v := reflect.ValueOf(ptr).Elem() // the struct variable
 	for i := 0; i < v.NumField(); i++ {
 		fieldInfo := v.Type().Field(i) // a reflect.StructField
@@ -33,17 +34,11 @@ func Unpack(req *http.Request, ptr interface{}) error {
 		if name == "" {
 			name = strings.ToLower(fieldInfo.Name)
 		}
-		ss := strings.Split(name, ",")
-		if len(ss) == 1 {
-			fields[name] = v.Field(i)
-		} else {
-			name = ss[0]
-			for _, s := range ss[1:] {
-				tmp := strings.Split(s, "=")
-				if tmp[0] == "default" {
-					fields[name] = reflect.ValueOf(tmp[1])
-				}
-			}
+		fields[name] = v.Field(i)
+		max := tag.Get("max")
+		if max != "" {
+			m, _ := strconv.ParseInt(max, 10, 64)
+			maxs[name] = m
 		}
 
 	}
@@ -57,12 +52,12 @@ func Unpack(req *http.Request, ptr interface{}) error {
 		for _, value := range values {
 			if f.Kind() == reflect.Slice {
 				elem := reflect.New(f.Type().Elem()).Elem()
-				if err := populate(elem, value); err != nil {
+				if err := populate(elem, value, maxs, name); err != nil {
 					return fmt.Errorf("%s: %v", name, err)
 				}
 				f.Set(reflect.Append(f, elem))
 			} else {
-				if err := populate(f, value); err != nil {
+				if err := populate(f, value, maxs, name); err != nil {
 					return fmt.Errorf("%s: %v", name, err)
 				}
 			}
@@ -72,7 +67,7 @@ func Unpack(req *http.Request, ptr interface{}) error {
 }
 
 //!+populate
-func populate(v reflect.Value, value string) error {
+func populate(v reflect.Value, value string, maxs map[string]int64, name string) error {
 	switch v.Kind() {
 	case reflect.String:
 		v.SetString(value)
@@ -81,6 +76,10 @@ func populate(v reflect.Value, value string) error {
 		i, err := strconv.ParseInt(value, 10, 64)
 		if err != nil {
 			return err
+		}
+		m, ok := maxs[name]
+		if ok && i > m {
+			i = m
 		}
 		v.SetInt(i)
 
